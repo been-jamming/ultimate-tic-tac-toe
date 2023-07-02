@@ -120,6 +120,13 @@ void make_move(uttt_board *board, int index, enum player_square square){
 	}
 }
 
+void undo_move(uttt_board *board){
+	while(board){
+		board->square = EMPTY_PLAYER;
+		board = board->parent;
+	}
+}
+
 uttt_board *get_move_selection(uttt_board *prev_move){
 	uttt_board *selection;
 

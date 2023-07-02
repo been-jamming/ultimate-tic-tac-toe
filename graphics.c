@@ -4,7 +4,6 @@
 
 #define RECURSION 2
 
-//char buffer[BUFFER_LINES*(BUFFER_WIDTH + 1) + 1];
 char *buffer;
 uttt_board *board;
 uttt_board *selection;
