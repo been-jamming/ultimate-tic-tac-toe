@@ -122,10 +122,10 @@ void make_move(uttt_board *board, int index, enum player_square square){
 
 void undo_move(uttt_board *board){
 	while(board){
-		board->square = EMPTY_PLAYER;
-		if(board->parent){
+		if(board->square != EMPTY_PLAYER && board->parent){
 			board->parent->filled_squares--;
 		}
+		board->square = EMPTY_PLAYER;
 		board = board->parent;
 	}
 }

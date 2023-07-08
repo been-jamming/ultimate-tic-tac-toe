@@ -1,14 +1,15 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #include "uttt.h"
 #include "mcts.h"
 
 #define RECURSION 2
 
-//extern char *buffer;
-//uttt_board *board;
-//uttt_board *selection;
-//mcts_node *node;
+extern char *buffer;
+uttt_board *board;
+uttt_board *selection;
+mcts_node *node;
 
 int get_board_size(int depth){
 	if(depth == 0){
@@ -112,8 +113,6 @@ int draw_board(uttt_board *board, uttt_board *selection, char *buffer, size_t li
 	return board_size;
 }
 
-
-/*
 int main(){
 	int i;
 	int j;
@@ -129,6 +128,7 @@ int main(){
 	enum player_square current_player;
 	uttt_board *board_selection;
 
+	srand(time(NULL));
 	board_size = get_board_size(RECURSION);
 	printf("%d\n", board_size);
 	buffer = malloc(sizeof(char)*(board_size*(board_size + 1) + 1));
@@ -145,7 +145,7 @@ int main(){
 
 	//Main game loop
 	while(board_selection){
-		if(current_player == X_PLAYER){
+		if(current_player == X_PLAYER || current_player == O_PLAYER){
 			node = create_node();
 			for(i = 0; i < 1000000; i++){
 				mc_search_recursive(board, board_selection, node, current_player, 1.41, 1, &num_x_wins, &num_o_wins);
@@ -185,6 +185,8 @@ int main(){
 		} else if(current_player == O_PLAYER){
 			printf("%sO Select Move\n", buffer);
 		}
+
+		/*
 		input = getchar();
 		if(input >= '1' && input <= '9'){
 			input_selection = input - '1';
@@ -201,6 +203,7 @@ int main(){
 				current_player = opposite_player(current_player);
 			}
 		}
+		*/
 	}
 	printf("\e[1;1H\e[2J");
 	draw_board(board, board_selection, buffer, board_size + 1, ' ');
@@ -210,4 +213,4 @@ int main(){
 
 	return 0;
 }
-*/
+
