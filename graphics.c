@@ -1,12 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "uttt.h"
+#include "mcts.h"
 
 #define RECURSION 2
 
-char *buffer;
-uttt_board *board;
-uttt_board *selection;
+//extern char *buffer;
+//uttt_board *board;
+//uttt_board *selection;
+//mcts_node *node;
 
 int get_board_size(int depth){
 	if(depth == 0){
@@ -110,12 +112,20 @@ int draw_board(uttt_board *board, uttt_board *selection, char *buffer, size_t li
 	return board_size;
 }
 
+
+/*
 int main(){
 	int i;
 	int j;
 	char input;
 	int input_selection;
 	int board_size;
+	int num_x_wins;
+	int num_o_wins;
+	int best_move;
+	double score;
+	double best_score;
+	mcts_node *current_node;
 	enum player_square current_player;
 	uttt_board *board_selection;
 
@@ -135,6 +145,39 @@ int main(){
 
 	//Main game loop
 	while(board_selection){
+		if(current_player == X_PLAYER){
+			node = create_node();
+			for(i = 0; i < 1000000; i++){
+				mc_search_recursive(board, board_selection, node, current_player, 1.41, 1, &num_x_wins, &num_o_wins);
+			}
+			
+			current_node = node;
+			best_score = 0.0;
+			best_move = 0;
+			while(board_selection->depth > 0){
+				for(i = 0; i < 9; i++){
+					if(current_node->children[i] && current_node->children[i]->plays > 0 && board_selection->depth > 1){
+						score = ((double) current_node->children[i]->wins)/current_node->children[i]->plays;
+					} else if(current_node->children[i] && current_node->children[i]->plays > 0 && board_selection->depth == 1){
+						score = 1.0 - ((double) current_node->children[i]->wins)/current_node->children[i]->plays;
+					} else {
+						score = 0.0;
+					}
+					if(score > best_score){
+						best_score = score;
+						best_move = i;
+					}
+				}
+				board_selection = board_selection->children[best_move];
+				current_node = current_node->children[best_move];
+			}
+			make_move(board_selection->parent, best_move, current_player);
+			free_tree(node);
+
+			board_selection = get_move_selection(board_selection);
+
+			current_player = opposite_player(current_player);
+		}
 		printf("\e[1;1H\e[2J");
 		draw_board(board, board_selection, buffer, board_size + 1, ' ');
 		if(current_player == X_PLAYER){
@@ -152,11 +195,10 @@ int main(){
 			if(board_selection->depth == 0){
 				make_move(board_selection->parent, input_selection, current_player);
 				board_selection = get_move_selection(board_selection);
-				if(current_player == X_PLAYER){
-					current_player = O_PLAYER;
-				} else if(current_player == O_PLAYER){
-					current_player = X_PLAYER;
+				if(!board_selection){
+					break;
 				}
+				current_player = opposite_player(current_player);
 			}
 		}
 	}
@@ -168,4 +210,4 @@ int main(){
 
 	return 0;
 }
-
+*/

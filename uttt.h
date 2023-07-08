@@ -21,4 +21,5 @@ uttt_board *create_board(int depth);
 enum player_square get_win(uttt_board *board, int index);
 void make_move(uttt_board *board, int index, enum player_square square);
 uttt_board *get_move_selection(uttt_board *prev_move);
+void undo_move(uttt_board *board);
 

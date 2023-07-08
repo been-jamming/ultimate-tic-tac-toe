@@ -123,17 +123,33 @@ void make_move(uttt_board *board, int index, enum player_square square){
 void undo_move(uttt_board *board){
 	while(board){
 		board->square = EMPTY_PLAYER;
+		if(board->parent){
+			board->parent->filled_squares--;
+		}
 		board = board->parent;
 	}
 }
 
 uttt_board *get_move_selection(uttt_board *prev_move){
 	uttt_board *selection;
+	uttt_board *parent;
 
 	selection = prev_move->parent_move;
-	while(selection && selection->square != EMPTY_PLAYER){
-		selection = selection->parent;
-	}
+	do{
+		while(selection && selection->square != EMPTY_PLAYER){
+			selection = selection->parent;
+		}
+		if(!selection){
+			break;
+		}
+		parent = selection->parent;
+		while(parent && parent->square == EMPTY_PLAYER){
+			parent = parent->parent;
+		}
+		if(parent){
+			selection = parent;
+		}
+	} while(parent);
 
 	return selection;
 }
